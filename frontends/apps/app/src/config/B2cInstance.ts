@@ -1,13 +1,10 @@
 import {
   Configuration,
-  EndSessionRequest,
   LogLevel,
-  PublicClientApplication,
-  RedirectRequest,
-  SilentRequest
+  PublicClientApplication
 } from "@azure/msal-browser"
 
-export const b2cPolicies = {
+const b2cPolicies = {
   names: {
     signUpSignIn: "B2C_1_sign_up",
     forgotPassword: "b2c_1_reset",
@@ -34,7 +31,7 @@ export const b2cPolicies = {
   authorityDomain: "carnivalai.b2clogin.com"
 }
 
-export const msalConfig: Configuration = {
+const msalConfig: Configuration = {
   auth: {
     clientId: "df2a7179-a94f-4018-84e2-812ebdf7f148",
     authority: b2cPolicies.authorities.signIn.authority,
@@ -76,3 +73,12 @@ export const msalConfig: Configuration = {
     }
   }
 }
+
+export const B2cInstance = new PublicClientApplication(msalConfig)
+
+export const scopes = [
+  "https://carnivalai.onmicrosoft.com/permissions/customer-privileges",
+  "https://carnivalai.onmicrosoft.com/permissions/cognitive-services",
+  "https://carnivalai.onmicrosoft.com/permissions/identity-services",
+  "https://carnivalai.onmicrosoft.com/permissions/workspace-services"
+]

@@ -1,5 +1,9 @@
+import { MsalInjectionKey } from "@/@symbols"
 import { AccountInfo } from "@azure/msal-browser"
 import { defineStore } from "pinia"
+import { inject } from "vue"
+
+import { getPublic } from "@/http/public/publicService"
 
 type State = {
   b2cAccount: AccountInfo | null
@@ -15,9 +19,11 @@ export const useAuthStore = defineStore("auth-store", {
   },
 
   actions: {
-    initializeUserAccount(account: AccountInfo | null) {
-      console.log("hello", account)
-      this.b2cAccount = account
+    async initializeUserAccount() {
+      console.log("initializeUserAccount")
+
+      const data = await getPublic()
+      console.log(data)
     }
   }
 })

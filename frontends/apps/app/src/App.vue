@@ -1,8 +1,16 @@
 <script setup lang="ts">
-  import { RouterView } from "vue-router"
+  import { onBeforeRouteUpdate, RouterView } from "vue-router"
   import Header from "@/components/Header.vue"
 
-  import { onBeforeMount } from "vue"
+  import { inject, onBeforeMount, onMounted } from "vue"
+  import router from "@/router"
+  import { useAuthStore } from "@/store"
+
+  const { initializeUserAccount } = useAuthStore()
+
+  onMounted(async () => {
+    await initializeUserAccount()
+  })
 </script>
 
 <template>
@@ -13,4 +21,3 @@
     </main>
   </div>
 </template>
-

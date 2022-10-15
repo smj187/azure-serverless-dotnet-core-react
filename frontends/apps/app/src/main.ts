@@ -1,26 +1,26 @@
-import { createApp, markRaw } from "vue"
+import { createApp, inject, markRaw } from "vue"
 import App from "@/App.vue"
 import router from "@/router"
 import { createPinia } from "pinia"
 import "@/assets/tailwind.css"
-import { CustomNavigationClient } from "@/router/CustomNavigationClient"
-import { MsalInstance } from "@/azure/b2cClient"
+import { msalPlugin } from "./plugins/msalPlugin"
+import { MsalInjectionKey } from "./@symbols"
+import { B2cInstance } from "@/config/B2cInstance"
 
 const app = createApp(App)
+
 app.use(router)
 
-const pinia = createPinia()
-app.use(pinia)
+app.use(createPinia())
 
-const navigationClient = new CustomNavigationClient(router)
-MsalInstance.getMsalInstance().setNavigationClient(navigationClient)
+// pinia.use(({ store }) => {
+//
+// })
 
-pinia.use(({ store }) => {
-  store.msalInstance = markRaw(MsalInstance.getMsalInstance())
-  store.router = markRaw(router)
-})
+app.use(msalPlugin, router, B2cInstance)
 
 router.isReady().then(() => {
   app.mount("#app")
 })
 
+//

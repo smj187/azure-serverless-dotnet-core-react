@@ -2,8 +2,15 @@
   import { RouterLink } from "vue-router"
   import { storeToRefs } from "pinia"
   import { useAuthStore } from "../store"
-  import { MsalInstance } from "@/azure/b2cClient"
-  const { isAuthenticated } = storeToRefs(useAuthStore())
+  import { inject } from "vue"
+  import { MsalInjectionKey } from "@/@symbols"
+
+  const {
+    isAuthenticated,
+    redirectToSignIn,
+    redirectToSignOut,
+    redirectToSignUp
+  } = inject(MsalInjectionKey)!
 </script>
 
 <template>
@@ -14,12 +21,12 @@
     <RouterLink to="/about">About</RouterLink>
     <span>|</span>
     <div class="flex items-center space-x-1" v-if="!isAuthenticated">
-      <button @click="MsalInstance.signUpRequest">sign up</button>
+      <button @click="redirectToSignUp">sign up</button>
       <span>or</span>
-      <button @click="MsalInstance.signInRequest">sign in</button>
+      <button @click="redirectToSignIn">sign in</button>
     </div>
     <div v-else>
-      <button @click="MsalInstance.signOutRequest">sign out</button>
+      <button @click="redirectToSignOut">sign out</button>
     </div>
   </header>
 </template>

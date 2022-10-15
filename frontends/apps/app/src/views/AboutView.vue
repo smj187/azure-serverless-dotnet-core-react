@@ -1,23 +1,17 @@
 <script setup lang="ts">
-  import { onMounted } from "vue"
-  import { MsalInstance } from "@/azure/b2cClient"
+  import { MsalInjectionKey } from "@/@symbols"
+  import { inject, onMounted } from "vue"
+  import { getWeather } from "@/http/weather/weatherService"
 
-  onMounted(async () => {
-    const accessToken = await MsalInstance.getToken()
+  async function test() {
+    const data = await getWeather()
+    console.log(data)
+  }
 
-    const headers = new Headers()
-    const bearer = `Bearer ${accessToken}`
-    headers.append("Authorization", bearer)
-    const options = {
-      method: "GET",
-      headers: headers
-    }
-    const data = await fetch("https://localhost:8000/WeatherForecast", options)
-
-    console.log(await data.json())
-  })
+  onMounted(async () => {})
 </script>
 
 <template>
   <div class="bg-rose-400">AboutView</div>
+  <button @click="test">click</button>
 </template>
