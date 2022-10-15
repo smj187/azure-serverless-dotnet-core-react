@@ -28,7 +28,7 @@ importers:
     dependencies:
       pinia: 2.0.23_l7r24p6nevbtlimqmqcwa3ouhu
       vue: 3.2.41
-      vue-router: 4.0.13_vue@3.2.41
+      vue-router: 4.1.5_vue@3.2.41
     devDependencies:
       '@types/node': 17.0.45
       '@vitejs/plugin-vue': 3.1.2_vite@3.1.8+vue@3.2.41
@@ -61,7 +61,7 @@ importers:
       axios: 1.1.2
       pinia: 2.0.23_l7r24p6nevbtlimqmqcwa3ouhu
       vue: 3.2.41
-      vue-router: 4.0.13_vue@3.2.41
+      vue-router: 4.1.5_vue@3.2.41
     devDependencies:
       '@types/node': 17.0.45
       '@vitejs/plugin-vue': 3.1.2_vite@3.1.8+vue@3.2.41
@@ -3221,8 +3221,8 @@ packages:
       vue: 3.2.41
     dev: false
 
-  /vue-router/4.0.13_vue@3.2.41:
-    resolution: {integrity: sha512-LmXrC+BkDRLak+d5xTMgUYraT3Nj0H/vCbP+7usGvIl9Viqd1UP6AsP0i69pSbn9O0dXK/xCdp4yPw21HqV9Jw==}
+  /vue-router/4.1.5_vue@3.2.41:
+    resolution: {integrity: sha512-IsvoF5D2GQ/EGTs/Th4NQms9gd2NSqV+yylxIyp/OYp8xOwxmU8Kj/74E9DTSYAyH5LX7idVUngN3JSj1X4xcQ==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
