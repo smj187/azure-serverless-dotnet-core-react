@@ -77,8 +77,5 @@ const msalConfig: Configuration = {
 export const B2cInstance = new PublicClientApplication(msalConfig)
 
 export const scopes = [
-  "https://carnivalai.onmicrosoft.com/permissions/customer-privileges",
-  "https://carnivalai.onmicrosoft.com/permissions/cognitive-services",
-  "https://carnivalai.onmicrosoft.com/permissions/identity-services",
-  "https://carnivalai.onmicrosoft.com/permissions/workspace-services"
+  "https://carnivalai.onmicrosoft.com/permissions/customer-privileges"
 ]

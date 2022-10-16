@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
-import { B2cInstance, scopes } from "@/config/B2cInstance"
+import { AdInstance, scopes } from "@/config/AdInstance"
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "application/json",
@@ -13,8 +13,8 @@ export const HttpClient = axios.create({
 
 const injectToken = async (config: AxiosRequestConfig) => {
   try {
-    if (B2cInstance.getActiveAccount()) {
-      const { accessToken } = await B2cInstance.acquireTokenSilent({
+    if (AdInstance.getActiveAccount()) {
+      const { accessToken } = await AdInstance.acquireTokenSilent({
         scopes: [...scopes]
       })
       config.headers!.Authorization = `Bearer ${accessToken}`

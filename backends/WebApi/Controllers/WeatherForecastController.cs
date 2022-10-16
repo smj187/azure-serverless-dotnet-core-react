@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [RequiredScopeOrAppPermission(AcceptedScope = new string[] { "customer-privileges" })]
+        [RequiredScopeOrAppPermission(AcceptedScope = new string[] { "admin-privileges", "customer-privileges" })]
         public IEnumerable<WeatherForecast> Get()
         {
             var x = HttpContext.Request;

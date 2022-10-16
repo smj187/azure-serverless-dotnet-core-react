@@ -2,7 +2,11 @@ import { MsalInjectionKey } from "@/@symbols"
 import { AccountInfo } from "@azure/msal-browser"
 import { defineStore } from "pinia"
 import { inject } from "vue"
-
+import {
+  getWeather,
+  Weather,
+  getWeatherAsAdmin
+} from "@/http/weather/weatherService"
 import { getPublic } from "@/http/public/publicService"
 
 type State = {
@@ -21,9 +25,11 @@ export const useAuthStore = defineStore("auth-store", {
   actions: {
     async initializeUserAccount() {
       console.log("initializeUserAccount")
-
-      const data = await getPublic()
-      console.log(data)
+      // const w = await getWeather()
+      // // const aw = await getWeatherAsAdmin()
+      // // console.log(w, aw)
+      // const data = await getPublic()
+      // console.log(data)
     }
   }
 })

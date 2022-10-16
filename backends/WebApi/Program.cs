@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 
@@ -18,37 +20,75 @@ builder.Services.AddCors(o => o.AddPolicy("default", builder =>
 }));
 
 
-// Adds Microsoft Identity platform (AAD v2.0) support to protect this Api
+// allow Azure AD and Azure B2C to authenticate on the same API
+// https://github.com/AzureAD/microsoft-identity-web/wiki/Web-APIs#using-multiple-authentication-schemes
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApi(options =>
         {
-            builder.Configuration.Bind("AzureAdB2C", options);
             options.Events = new JwtBearerEvents();
 
-            /// <summary>
-            /// Below you can do extended token validation and check for additional claims, such as:
-            ///
-            /// - check if the caller's tenant is in the allowed tenants list via the 'tid' claim (for multi-tenant applications)
-            /// - check if the caller's account is homed or guest via the 'acct' optional claim
-            /// - check if the caller belongs to right roles or groups via the 'roles' or 'groups' claim, respectively
-            ///
-            /// Bear in mind that you can do any of the above checks within the individual routes and/or controllers as well.
-            /// For more information, visit: https://docs.microsoft.com/azure/active-directory/develop/access-tokens#validate-the-user-has-permission-to-access-this-data
-            /// </summary>
+            options.Events.OnTokenValidated = async context =>
+            {
+                string[] allowedClientApps = { 
+                    // admin-app
+                    "fce71c0c-5f69-4b6f-ac2c-79fd015cfe4e",
+                };
 
-            //options.Events.OnTokenValidated = async context =>
-            //{
-            //    string[] allowedClientApps = { /* list of client ids to allow */ };
+                string clientappId = context?.Principal?.Claims.FirstOrDefault(x => x.Type == "azp" || x.Type == "appid")?.Value;
 
-            //    string clientappId = context?.Principal?.Claims
-            //        .FirstOrDefault(x => x.Type == "azp" || x.Type == "appid")?.Value;
+                var tid = context.Principal.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/tenantid") ?? null;
 
-            //    if (!allowedClientApps.Contains(clientappId))
-            //    {
-            //        throw new System.Exception("This client is not authorized");
-            //    }
-            //};
-        }, options => { builder.Configuration.Bind("AzureAdB2C", options); });
+                builder.Configuration.Bind("AzureAd", options);
+
+                if (!allowedClientApps.Contains(clientappId))
+                {
+                    throw new System.Exception("This client is not authorized");
+                }
+            };
+        },
+        options =>
+        {
+            builder.Configuration.Bind("AzureAd", options);
+        });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.DefaultPolicy = new AuthorizationPolicyBuilder(
+        JwtBearerDefaults.AuthenticationScheme,
+        "B2CScheme")
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
+builder.Services.AddAuthentication()
+        .AddMicrosoftIdentityWebApi(options =>
+        {
+            options.Events = new JwtBearerEvents();
+
+            options.Events.OnTokenValidated = async context =>
+            {
+                string[] allowedClientApps = { 
+                    // customer-app
+                    "df2a7179-a94f-4018-84e2-812ebdf7f148",
+                };
+
+                string clientappId = context?.Principal?.Claims.FirstOrDefault(x => x.Type == "azp" || x.Type == "appid")?.Value;
+
+
+                builder.Configuration.Bind("AzureAdB2C", options);
+
+                if (!allowedClientApps.Contains(clientappId))
+                {
+                    throw new System.Exception("This client is not authorized");
+                }
+            };
+        },
+        options =>
+        {
+            builder.Configuration.Bind("AzureAdB2C", options);
+        }, "B2CScheme");
+
+
 
 // The following flag can be used to get more descriptive errors in development environments
 //IdentityModelEventSource.ShowPII = false;
