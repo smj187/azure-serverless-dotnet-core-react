@@ -38,19 +38,21 @@ interface PatchUserAccountTierRequest {
 
 export const getAccountTiers = async () => {
   const response = await HttpClient.get<AccountTier[]>(
-    "/api/v1/users/list-tiers"
+    "/id/api/v1/users/list-tiers"
   )
   return response.data
 }
 
 export const getUsers = async () => {
-  const response = await HttpClient.get<Array<User>>("/api/v1/users/list-users")
+  const response = await HttpClient.get<Array<User>>(
+    "/id/api/v1/users/list-users"
+  )
 
   return response.data
 }
 
 export const findUser = async (userId: string) => {
-  const r = await HttpClient.get<User>(`/api/v1/users/find/${userId}`)
+  const r = await HttpClient.get<User>(`/id/api/v1/users/find/${userId}`)
   return r.data
 }
 
@@ -59,7 +61,7 @@ export const patchUserAccountTier = async (
   newAccountTierValue: number
 ) => {
   const r = await HttpClient.patch<User>(
-    "/api/v1/users/account-tier",
+    "/id/api/v1/users/account-tier",
     JSON.stringify({
       userId,
       value: newAccountTierValue

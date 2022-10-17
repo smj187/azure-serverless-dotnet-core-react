@@ -109,6 +109,7 @@ namespace IdentityService.API.Controllers
 
         [HttpPatch]
         [Route("account-tier")]
+        [RequiredScopeOrAppPermission(AcceptedScope = new string[] { "admin-privileges" })]
         public async Task<IActionResult> PatchAccountTier([FromBody] PatchUserAccountTierRequest request)
         {
             var command = new PatchAccountTierCommand

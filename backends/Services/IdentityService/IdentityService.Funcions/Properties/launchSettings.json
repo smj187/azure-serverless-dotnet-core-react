@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "IdentityService.Funcions": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7160",
-      "launchBrowser": false
-    }
-  }
-}

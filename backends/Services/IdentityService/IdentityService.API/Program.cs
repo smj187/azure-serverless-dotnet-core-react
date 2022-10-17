@@ -42,6 +42,9 @@ builder.Services.AddAzureB2cAuthentication(builder.Configuration);
 
 
 var app = builder.Build();
+app.UsePathBase(new PathString("/identity-service"));
+app.UsePathBase(new PathString("/id"));
+app.UseRouting();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

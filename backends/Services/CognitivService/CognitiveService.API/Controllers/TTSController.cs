@@ -18,7 +18,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace CognitiveService.API.Controllers
 {
-    [Route("[controller]")]
+    [ApiController]
     [Route("api/v1/[controller]")]
     public class TTSController : ControllerBase
     {

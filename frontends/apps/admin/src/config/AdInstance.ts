@@ -9,8 +9,8 @@ const msalConfig: Configuration = {
     clientId: "fce71c0c-5f69-4b6f-ac2c-79fd015cfe4e",
     authority:
       "https://login.microsoftonline.com/eec93096-2e1d-4a28-972f-95df728d60d0",
-    redirectUri: "http://localhost:3001",
-    postLogoutRedirectUri: "http://localhost:3001"
+    redirectUri: "https://localhost:3001",
+    postLogoutRedirectUri: "https://localhost:3001"
   },
   cache: {
     cacheLocation: "localStorage"

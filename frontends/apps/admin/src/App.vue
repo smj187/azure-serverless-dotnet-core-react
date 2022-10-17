@@ -10,7 +10,9 @@
   const { initializeStore } = useUserStore()
 
   onBeforeMount(async () => {
-    await initializeStore()
+    if (isAuthenticated) {
+      await initializeStore()
+    }
   })
 </script>
 

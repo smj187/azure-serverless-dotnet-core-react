@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 
 namespace CognitiveService.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class VoicesController : ControllerBase
@@ -34,6 +35,31 @@ namespace CognitiveService.API.Controllers
             _mapper = mapper;
             _mediator = mediator;
             _cache = factory.GetRedisProvider(configuration.GetValue<string>("Cache:Database"));
+        }
+
+        [HttpGet]
+        [Route("list-voices")]
+        [RequiredScope()]
+        public async Task<IActionResult> ListVoicesAsync()
+        {
+            //var cache = _cache.StringGet(_cacheKey);
+
+            //IReadOnlyCollection<Voice> voices;
+
+            //if (cache != null && cache.Length > 0)
+            //{
+            //    voices = JsonConvert.DeserializeObject<IReadOnlyCollection<Voice>>(cache);
+            //}
+            //else
+            //{
+            //    var query = new ListVoicesQuery();
+            //    voices = await _mediator.Send(query);
+            //    _cache.StringSet(_cacheKey, JsonConvert.SerializeObject(voices), TimeSpan.FromSeconds(60 * 60 * 24));
+            //}
+
+            //return Ok(voices);
+
+            return Ok(await _mediator.Send(new ListVoicesQuery()));
         }
 
         [HttpPost]
@@ -68,31 +94,7 @@ namespace CognitiveService.API.Controllers
             return Ok(data);
         }
 
-        [HttpGet]
-        [Authorize]
-        [Route("list")]
-        [RequiredScope()]
-        public async Task<IActionResult> ListVoicesAsync()
-        {
-            //var cache = _cache.StringGet(_cacheKey);
-
-            //IReadOnlyCollection<Voice> voices;
-
-            //if (cache != null && cache.Length > 0)
-            //{
-            //    voices = JsonConvert.DeserializeObject<IReadOnlyCollection<Voice>>(cache);
-            //}
-            //else
-            //{
-            //    var query = new ListVoicesQuery();
-            //    voices = await _mediator.Send(query);
-            //    _cache.StringSet(_cacheKey, JsonConvert.SerializeObject(voices), TimeSpan.FromSeconds(60 * 60 * 24));
-            //}
-
-            //return Ok(voices);
-
-            return Ok(await _mediator.Send(new ListVoicesQuery()));
-        }
+        
 
         [HttpGet]
         [Route("find/{voiceId:guid}")]
