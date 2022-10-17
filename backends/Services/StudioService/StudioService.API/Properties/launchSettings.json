@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "StudioService.API": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7001 --cors http://localhost:3001",
+      "launchBrowser": false
+    }
+  }
+}

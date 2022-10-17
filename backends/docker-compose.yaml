@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  cognitiv_cache:
+    image: redis/redis-stack
+    container_name: cognitiv_cache
+    ports:
+      - 5103:6379
+      - 5104:8001
