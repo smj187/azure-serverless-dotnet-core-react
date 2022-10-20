@@ -6,6 +6,7 @@ export interface MsalPluginProvide {
   isAuthenticated: ComputedRef<boolean>
   redirectToSignIn(): void
   redirectToSignOut(): void
+  aquireAccessTokenDEV(): Promise<string>
 }
 
 export const MsalInjectionKey: InjectionKey<MsalPluginProvide> = Symbol("Msal")

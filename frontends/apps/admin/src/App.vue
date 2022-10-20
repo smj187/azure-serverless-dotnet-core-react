@@ -4,13 +4,17 @@
   import Aside from "@/components/layout/aside/Aside.vue"
   import { inject, onBeforeMount } from "vue"
   import { useUserStore } from "@/store/userStore"
+  import { useVoiceStore } from "@/store/voiceStore"
   import { MsalInjectionKey } from "./@symbols"
   import LoginView from "./views/LoginView.vue"
+
   const { isAuthenticated } = inject(MsalInjectionKey)!
   const { initializeStore } = useUserStore()
+  const { initializeVoiceStore } = useVoiceStore()
 
   onBeforeMount(async () => {
     if (isAuthenticated) {
+      await initializeVoiceStore()
       await initializeStore()
     }
   })

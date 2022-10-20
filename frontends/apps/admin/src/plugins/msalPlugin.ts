@@ -236,12 +236,25 @@ export const msalPlugin = {
       })
     }
 
+    async function aquireAccessTokenDEV() {
+      if (AdInstance === null) {
+        throw new Error("initializeMsal() was not initialized")
+      }
+
+      const { accessToken } = await AdInstance.acquireTokenSilent({
+        scopes: [...scopes]
+      })
+
+      return accessToken
+    }
+
     app.provide(MsalInjectionKey, {
       account,
       isAuthenticated,
 
       redirectToSignIn,
-      redirectToSignOut
+      redirectToSignOut,
+      aquireAccessTokenDEV
     })
   }
 }

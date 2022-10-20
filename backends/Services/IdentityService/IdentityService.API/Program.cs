@@ -17,13 +17,7 @@ builder.Services.Configure<RouteOptions>(opts => { opts.LowercaseUrls = true; })
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors(o => o.AddPolicy("default", builder =>
-{
-    builder.AllowAnyOrigin()
-           .AllowAnyMethod()
-           .AllowAnyHeader();
-}));
-
+builder.Services.AddCors();
 
 builder.Services.AddMongoDatabase(builder.Configuration).AddBsonClassMappings();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -47,10 +41,10 @@ app.UsePathBase(new PathString("/id"));
 app.UseRouting();
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3001", "https://localhost:3000"));
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("default");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

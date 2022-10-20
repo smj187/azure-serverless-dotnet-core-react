@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace IdentityService.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class UsersController : ControllerBase
@@ -36,6 +36,7 @@ namespace IdentityService.API.Controllers
 
         [HttpGet]
         [Route("profile")]
+        [RequiredScope(new string[] { "customer-privileges" })]
         public async Task<IActionResult> GetUserProfile()
         {
             var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
@@ -57,6 +58,7 @@ namespace IdentityService.API.Controllers
 
         [HttpPut]
         [Route("{userId:guid}")]
+        [RequiredScope(new string[] { "admin-privileges" })]
         public async Task<IActionResult> Test([FromRoute] Guid userId)
         {
             var u = await _userRepository.FindAsync(x => x.B2cObjectId == userId.ToString());

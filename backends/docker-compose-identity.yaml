@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  identity_database:
+    image: mongo
+    container_name: identity_database
+    restart: unless-stopped
+    ports:
+      - 5002:27017
+    volumes:
+      - identity-database:/data/db
+
+  identityservice:
+    image: ${DOCKER_REGISTRY-}identityservice
+    container_name: identityservice
+    build:
+      context: .
+      dockerfile: Services/IdentityService/IdentityService.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/IdentityService.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=test
+      - MongoConnectionString=mongodb://host.docker.internal:5002/
+      - MongoDatabase=SaaS_Database_Local
+      - AzureAdB2C:Instance=https://carnivalai.b2clogin.com
+      - AzureAdB2c:Domain=carnivalai.onmicrosoft.com
+      - AzureAdB2c:ClientId=24ec2117-b2e7-4a9d-9cea-db3aaddcb17c
+      - AzureAdB2c:SignedOutCallbackPath=/signout/B2C_1_sign_up_and_sign_in
+      - AzureAdB2c:SignUpSignInPolicyId=B2C_1_sign_up_and_sign_in
+      - AzureAdB2c:AllowedWebClientId=df2a7179-a94f-4018-84e2-812ebdf7f148
+      - AzureAd:Instance=https://login.microsoftonline.com/
+      - AzureAd:Domain=carnivalai.onmicrosoft.com
+      - AzureAd:TenantId=eec93096-2e1d-4a28-972f-95df728d60d0
+      - AzureAd:ClientId=24ec2117-b2e7-4a9d-9cea-db3aaddcb17c
+      - AzureAd:AllowedWebClientId=fce71c0c-5f69-4b6f-ac2c-79fd015cfe4e
+      - BASIC_AUTH_USERNAME=admin
+      - BASIC_AUTH_PASSWORD=passwd
+    ports:
+      - "5000:443"
+    depends_on:
+      - identity_database
+
+volumes:
+  identity-database:

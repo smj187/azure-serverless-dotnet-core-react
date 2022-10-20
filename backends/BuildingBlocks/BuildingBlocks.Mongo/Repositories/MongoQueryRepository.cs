@@ -33,6 +33,11 @@ namespace BuildingBlocks.Mongo.Repositories
             return await _mongoCollection.CountDocumentsAsync(new BsonDocument());
         }
 
+        public async Task<bool> Exists(Expression<Func<T, bool>> expression)
+        {
+            return await _mongoCollection.Find(expression).AnyAsync();
+        }
+
         public async Task<T?> FindAsync(Guid id)
         {
             var filter = _filterBuilder.Eq(x => x.Id, id);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,12 @@ namespace BuildingBlocks.BlobStorage.Interfaces
 {
     public interface IBlobStorageService
     {
-        Task<string> UploadStreamAsync(Stream fileStream, string fileName, string contentType);
+        Task<string> UploadSpeechStreamAsync(Stream fileStream, string fileName, string contentType);
+        Task<bool> DeleteSpeechBlobAsync(string fileName);
+
+
+        Task<string> UploadVoicePreviewAsset(string fileName, IFormFile audio);
+        Task<string> UploadVoiceAvatarAsset(string fileName, IFormFile audio);
+        Task<bool> DeleteVoiceAssetBlob(string fileName);
     }
 }

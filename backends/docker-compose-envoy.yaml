@@ -1,0 +1,116 @@
+version: "3.8"
+
+services:
+  gateway:
+    container_name: gateway
+    build:
+      context: ./Gateway
+      dockerfile: Dockerfile
+    ports:
+      - "9902:9902"
+      - "10000:10000"
+#   identity_database:
+#     image: mongo
+#     container_name: identity_database
+#     restart: unless-stopped
+#     ports:
+#       - 5002:27017
+#     volumes:
+#       - identity-database:/data/db
+
+#   identityservice:
+#     image: ${DOCKER_REGISTRY-}identityservice
+#     container_name: identityservice
+#     build:
+#       context: .
+#       dockerfile: Services/IdentityService/IdentityService.API/Dockerfile
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Development
+#       - ASPNETCORE_URLS=https://+:443;http://+:80
+#       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/IdentityService.pfx
+#       - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
+#       - MongoConnectionString=mongodb://host.docker.internal:5002/
+#       - MongoDatabase=Carnival_Ai_Identity_Database_Dev
+#       - BASIC_AUTH_USERNAME=admin
+#       - BASIC_AUTH_PASSWORD=passwd
+#       - AzureAdB2C:Instance=https://carnivalai.b2clogin.com
+#       - AzureAdB2c:Domain=carnivalai.onmicrosoft.com
+#       - AzureAdB2c:ClientId=24ec2117-b2e7-4a9d-9cea-db3aaddcb17c
+#       - AzureAdB2c:SignedOutCallbackPath=/signout/B2C_1_sign_up_and_sign_in
+#       - AzureAdB2c:SignUpSignInPolicyId=B2C_1_sign_up_and_sign_in
+#       - AzureAdB2c:AllowedWebClientId=df2a7179-a94f-4018-84e2-812ebdf7f148
+#       - AzureAd:Instance=https://login.microsoftonline.com/
+#       - AzureAd:Domain=carnivalai.onmicrosoft.com
+#       - AzureAd:TenantId=eec93096-2e1d-4a28-972f-95df728d60d0
+#       - AzureAd:ClientId=24ec2117-b2e7-4a9d-9cea-db3aaddcb17c
+#       - AzureAd:AllowedWebClientId=fce71c0c-5f69-4b6f-ac2c-79fd015cfe4e
+
+#     ports:
+#       - "5001:80"
+#       - "5000:443"
+#     volumes:
+#       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+#       - ${USERPROFILE}\.aspnet\Https:/https/:ro
+#     depends_on:
+#       - identity_database
+
+#   # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#   #
+#   #
+#   # COGNITIVE SERVICE STUFF
+#   #
+#   #
+#   # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#   cognitive_database:
+#     image: mongo
+#     container_name: cognitive_database
+#     restart: unless-stopped
+#     ports:
+#       - 5102:27017
+#     volumes:
+#       - cognitive-database:/data/db
+
+#   cognitiveservice:
+#     image: ${DOCKER_REGISTRY-}cognitiveservice
+#     container_name: cognitiveservice
+#     build:
+#       context: .
+#       dockerfile: Services/CognitiveService/CognitiveService.API/Dockerfile
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Development
+#       - ASPNETCORE_URLS=https://+:443;http://+:80
+#       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/CognitiveService.pfx
+#       - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
+#       - MongoConnectionString=mongodb://host.docker.internal:5102/
+#       - MongoDatabase=Carnival_Ai_Cognitive_Database_Dev
+#       - AzureAdB2C:Instance=https://carnivalai.b2clogin.com
+#       - AzureAdB2c:Domain=carnivalai.onmicrosoft.com
+#       - AzureAdB2c:ClientId=24ec2117-b2e7-4a9d-9cea-db3aaddcb17c
+#       - AzureAdB2c:SignedOutCallbackPath=/signout/B2C_1_sign_up_and_sign_in
+#       - AzureAdB2c:SignUpSignInPolicyId=B2C_1_sign_up_and_sign_in
+#       - AzureAdB2c:AllowedWebClientId=df2a7179-a94f-4018-84e2-812ebdf7f148
+#       - AzureAd:Instance=https://login.microsoftonline.com/
+#       - AzureAd:Domain=carnivalai.onmicrosoft.com
+#       - AzureAd:TenantId=eec93096-2e1d-4a28-972f-95df728d60d0
+#       - AzureAd:ClientId=24ec2117-b2e7-4a9d-9cea-db3aaddcb17c
+#       - AzureAd:AllowedWebClientId=fce71c0c-5f69-4b6f-ac2c-79fd015cfe4e
+#       - BlobStorage:ConnectionString=DefaultEndpointsProtocol=https;AccountName=microservicescognitive;AccountKey=viyAFzqvqL8A5s4MSt4GbFgYYcS7petV2bL6+ndOCXotJhB0AWTWbFLX4JZF3MPm8lcMVWMkdqy9+ASt4WBCpg==;EndpointSuffix=core.windows.net
+#       - BlobStorage:SpeechSynthesisContainerName=speech-synthesis
+#       - BlobStorage:VoiceAssetsContainerName=voice-assets
+#       - ExternalServices:AzureTTS:ApiKey=f67126b813c14c2a96fcadc61adfa867
+#       - ExternalServices:AwsTTS:AccessKey=AKIATBG2M4KPIDGN7AEY
+#       - ExternalServices:AwsTTS:SecretKey=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
+#       - ExternalServices:GoogleTTS:ApiKey=AIzaSyA0uxOkaOxNaTQUNRUTmgnir-IPpQk3gJk
+
+#     ports:
+#       - "5101:80"
+#       - "5100:443"
+#     volumes:
+#       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+#       - ${USERPROFILE}\.aspnet\Https:/https/:ro
+#     depends_on:
+#       - cognitive_database
+
+# volumes:
+#   cognitive-database:
+#   identity-database:

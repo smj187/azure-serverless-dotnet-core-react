@@ -39,7 +39,7 @@ namespace WorkspaceService.Application.CommandHandlers
             m.Position = 0;
 
 
-            var url = await _blobStorageService.UploadStreamAsync(m, fileName, contentType);
+            var url = await _blobStorageService.UploadSpeechStreamAsync(m, fileName, contentType);
 
             project.PatchImageUrl(url);
             await _projectRepository.PatchAsync(project);

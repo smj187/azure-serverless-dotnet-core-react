@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { MsalInjectionKey } from "@/@symbols"
-  import { computed, inject } from "vue"
+  import { computed, inject, onMounted, ref } from "vue"
 
-  const { account, redirectToSignOut } = inject(MsalInjectionKey)!
+  const { account, redirectToSignOut, aquireAccessTokenDEV } =
+    inject(MsalInjectionKey)!
 
   const lastLogin = computed(() => {
     if (account.value?.idTokenClaims?.iat) {
@@ -24,6 +25,13 @@
 
     return null
   })
+
+  const token = ref<string | null>(null)
+
+  onMounted(async () => {
+    const t = await aquireAccessTokenDEV()
+    token.value = t
+  })
 </script>
 
 <template>
@@ -36,6 +44,9 @@
     <div>
       <span class="font-bold pr-3">Login:</span>
       <span>{{ lastLogin }}</span>
+    </div>
+    <div>
+      <input class="bg-zinc-800 p-3 rounded w-full max-w-xl" v-model="token" />
     </div>
     <div>
       <button

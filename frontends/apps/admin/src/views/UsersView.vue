@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useUserStore } from "@/store/userStore"
   import { storeToRefs } from "pinia"
-  import AccountTiersList from "../components/AccountTiersList.vue"
   import { UseTimeAgo } from "@vueuse/components"
   const { users } = storeToRefs(useUserStore())
 </script>

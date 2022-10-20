@@ -40,6 +40,14 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: "/voices/:voiceId",
+    name: "VoiceDetails",
+    component: () => import("@/views/VoiceDetails.vue"),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: "/profile",
     name: "Profile",
     component: () => import("@/views/ProfileView.vue"),

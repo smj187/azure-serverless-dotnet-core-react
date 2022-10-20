@@ -51,6 +51,11 @@ namespace BuildingBlocks.Mongo.Repositories
             return await _commandRepository.DeleteManyAsync(ids);
         }
 
+        public async Task<bool> Exists(Expression<Func<T, bool>> expression)
+        {
+            return await _queryRepository.Exists(expression);
+        }
+
         public async Task<T?> FindAsync(Guid id)
         {
             return await _queryRepository.FindAsync(id);
