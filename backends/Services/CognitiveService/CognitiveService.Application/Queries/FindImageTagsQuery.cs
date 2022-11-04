@@ -1,6 +1,6 @@
 ﻿using CognitiveService.Application.Services.Models;
 using MediatR;
-using Microsoft.CognitiveServices.Speech;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace CognitiveService.Application.Queries
 {
-    public class FindAzureVoicesQuery : IRequest<IReadOnlyCollection<AzureSpeechVoiceResponse>>
+    public class FindImageTagsQuery : IRequest<AzureVisionTagResponse>
     {
-
+        public string? Url { get; set; } = null;
+        public IFormFile? Image { get; set; } = null;
     }
 }

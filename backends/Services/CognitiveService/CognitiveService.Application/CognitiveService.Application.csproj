@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Polly" Version="3.7.8.1" />
+    <PackageReference Include="AWSSDK.Polly" Version="3.7.100.8" />
+    <PackageReference Include="AWSSDK.Rekognition" Version="3.7.100.8" />
+    <PackageReference Include="Azure.AI.TextAnalytics" Version="5.2.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
     <PackageReference Include="MediatR" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.24.1" />
     <PackageReference Include="RestSharp" Version="108.0.2" />
   </ItemGroup>
 

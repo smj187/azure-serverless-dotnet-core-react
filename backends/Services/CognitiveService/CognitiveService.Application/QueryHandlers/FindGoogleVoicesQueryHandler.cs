@@ -1,5 +1,6 @@
 ﻿using CognitiveService.Application.Queries;
-using CognitiveService.Infrastructure.ProviderResponses;
+using CognitiveService.Application.Services.Interfaces;
+using CognitiveService.Application.Services.Models;
 using MediatR;
 using RestSharp;
 using System;
@@ -11,29 +12,18 @@ using System.Threading.Tasks;
 
 namespace CognitiveService.Application.QueryHandlers
 {
-    public class FindGoogleVoicesQueryHandler : IRequestHandler<FindGoogleVoicesQuery, IReadOnlyCollection<GoogleVoiceResponse>>
+    public class FindGoogleVoicesQueryHandler : IRequestHandler<FindGoogleVoicesQuery, GoogleVoiceResponse>
     {
-        private readonly string _apiKey = "AIzaSyA0uxOkaOxNaTQUNRUTmgnir-IPpQk3gJk";
-        private readonly RestClient _client;
+        private readonly IGoogleSpeechService _googleSpeechService;
 
-        public FindGoogleVoicesQueryHandler()
+        public FindGoogleVoicesQueryHandler(IGoogleSpeechService googleSpeechService)
         {
-            var client = new RestClient($"https://texttospeech.googleapis.com");
-            client.AddDefaultParameter("key", _apiKey);
-            _client = client;
+            _googleSpeechService = googleSpeechService;
         }
 
-        public async Task<IReadOnlyCollection<GoogleVoiceResponse>> Handle(FindGoogleVoicesQuery request, CancellationToken cancellationToken)
+        public async Task<GoogleVoiceResponse> Handle(FindGoogleVoicesQuery request, CancellationToken cancellationToken)
         {
-            var restRequest = new RestRequest("v1beta1/voices");
-
-            var restResponse = await _client.GetAsync<GoogleVoicesResponse>(restRequest, cancellationToken);
-            if (restResponse == null)
-            {
-                throw new NotImplementedException();
-            }
-
-            return restResponse.Voices;
+            return await _googleSpeechService.DiscoverGoogleVoicesAsync();
         }
     }
 }

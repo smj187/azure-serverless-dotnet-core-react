@@ -1,40 +1,31 @@
 ﻿using CognitiveService.Application.Queries;
-using CognitiveService.Infrastructure.ProviderResponses;
+using CognitiveService.Application.Services.Interfaces;
+using CognitiveService.Application.Services.Models;
 using MediatR;
+using Microsoft.CognitiveServices.Speech;
+using Microsoft.CognitiveServices.Speech.Audio;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CognitiveService.Application.QueryHandlers
 {
-    public class FindAzureVoicesQueryHandler : IRequestHandler<FindAzureVoicesQuery, IReadOnlyCollection<AzureVoiceResponse>>
+    public class FindAzureVoicesQueryHandler : IRequestHandler<FindAzureVoicesQuery, IReadOnlyCollection<AzureSpeechVoiceResponse>>
     {
-        private readonly string _region = "westeurope";
-        private readonly RestClient _client;
-        private readonly string _apiKey = "f67126b813c14c2a96fcadc61adfa867";
+        private readonly IAzureSpeechService _azureSpeechService;
 
-        public FindAzureVoicesQueryHandler()
+        public FindAzureVoicesQueryHandler(IAzureSpeechService azureSpeechService)
         {
-            var client = new RestClient($"https://{_region}.tts.speech.microsoft.com");
-            client.AddDefaultParameter("Ocp-Apim-Subscription-Key", _apiKey);
-            _client = client;
+            _azureSpeechService = azureSpeechService;
         }
 
-        public async Task<IReadOnlyCollection<AzureVoiceResponse>> Handle(FindAzureVoicesQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<AzureSpeechVoiceResponse>> Handle(FindAzureVoicesQuery request, CancellationToken cancellationToken)
         {
-            var restRequest = new RestRequest("cognitiveservices/voices/list", Method.Get);
-
-            var restResponse = await _client.GetAsync<IReadOnlyCollection<AzureVoiceResponse>>(restRequest, cancellationToken);
-            if (restResponse == null)
-            {
-                throw new NotImplementedException();
-            }
-
-
-            return restResponse;
+            return await _azureSpeechService.DiscoverAzureVoicesAsync();
         }
     }
 }

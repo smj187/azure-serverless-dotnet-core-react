@@ -9,7 +9,8 @@ namespace CognitiveService.Application.Commands
 {
     public class SynthesisSpeechCommand : IRequest<string>
     {
-        public string Value { get; set; }
+        public string? Text { get; set; } = null;
+        public string? Ssml { get; set; } = null;
         public Guid VoiceId { get; set; }
         public string Locale { get; set; }
     }

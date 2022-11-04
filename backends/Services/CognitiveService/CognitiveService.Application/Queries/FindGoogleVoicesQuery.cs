@@ -1,4 +1,4 @@
-﻿using CognitiveService.Infrastructure.ProviderResponses;
+﻿using CognitiveService.Application.Services.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CognitiveService.Application.Queries
 {
-    public class FindGoogleVoicesQuery : IRequest<IReadOnlyCollection<GoogleVoiceResponse>>
+    public class FindGoogleVoicesQuery : IRequest<GoogleVoiceResponse>
     {
 
     }

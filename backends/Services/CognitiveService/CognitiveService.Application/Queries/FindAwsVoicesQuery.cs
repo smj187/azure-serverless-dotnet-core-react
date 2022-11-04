@@ -1,4 +1,4 @@
-﻿using CognitiveService.Infrastructure.ProviderResponses;
+﻿using Amazon.Polly.Model;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CognitiveService.Application.Queries
 {
-    public class FindAwsVoicesQuery : IRequest<IReadOnlyCollection<AwsVoiceResponse>>
+    public class FindAwsVoicesQuery : IRequest<DescribeVoicesResponse>
     {
 
     }

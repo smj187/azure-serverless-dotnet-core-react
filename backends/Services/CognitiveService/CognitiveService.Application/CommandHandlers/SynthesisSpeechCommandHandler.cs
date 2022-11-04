@@ -13,19 +13,19 @@ namespace CognitiveService.Application.CommandHandlers
 {
     public class SynthesisSpeechCommandHandler : IRequestHandler<SynthesisSpeechCommand, string>
     {
-        private readonly IAwsService _awsService;
+        private readonly IAzureSpeechService _azureSpeechService;
+        private readonly IAmazonPollyService _amazonPollyService;
         private readonly IVoiceRepository _voiceRepository;
         private readonly IBlobStorageService _blobStorageService;
-        private readonly IGoogleService _googleService;
-        private readonly IAzureService _azureService;
+        private readonly IGoogleSpeechService _googleSpeechService;
 
-        public SynthesisSpeechCommandHandler(IAwsService awsService, IVoiceRepository voiceRepository, IBlobStorageService blobStorageService, IGoogleService googleService, IAzureService azureService)
+        public SynthesisSpeechCommandHandler(IAzureSpeechService azureSpeechService, IAmazonPollyService amazonPollyService, IVoiceRepository voiceRepository, IBlobStorageService blobStorageService, IGoogleSpeechService googleSpeechService)
         {
-            _awsService = awsService;
+            _azureSpeechService = azureSpeechService;
+            _amazonPollyService = amazonPollyService;
             _voiceRepository = voiceRepository;
             _blobStorageService = blobStorageService;
-            _googleService = googleService;
-            _azureService = azureService;
+            _googleSpeechService = googleSpeechService;
         }
 
         public async Task<string> Handle(SynthesisSpeechCommand request, CancellationToken cancellationToken)
@@ -36,18 +36,20 @@ namespace CognitiveService.Application.CommandHandlers
                 throw new NotImplementedException();
             }
 
+
             Stream stream;
             if (voice.VoiceProvider.IsAwsProvider())
             {
-                stream = await _awsService.TTS(request.Value, request.Locale, voice.InternalName, voice.AwsVoiceConfig!.DefaultEngine);
+                stream = await _amazonPollyService.TTS(request.Locale, voice.InternalName, voice.AwsVoiceConfig!.DefaultEngine, request.Text, request.Ssml);
             }
             else if (voice.VoiceProvider.IsGoogleProvider())
             {
-                stream = await _googleService.TTS(request.Value, request.Locale, voice.InternalName, voice.Gender);
+                //stream = await _googleService.TTS(request.Text, request.Locale, voice.InternalName, voice.Gender);
+                stream = await _googleSpeechService.TTS(request.Locale, voice.InternalName, voice.Gender, request.Text, request.Ssml);
             }
             else if (voice.VoiceProvider.IsAzureProvider())
             {
-                stream = await _azureService.TTS(request.Value, request.Locale, voice.InternalName, voice.Gender);
+                stream = await _azureSpeechService.TTS(request.Locale, voice.InternalName, voice.Gender, request.Text, request.Ssml);
             }
             else
             {

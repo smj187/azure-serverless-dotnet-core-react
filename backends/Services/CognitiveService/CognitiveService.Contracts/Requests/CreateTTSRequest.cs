@@ -8,9 +8,10 @@ namespace CognitiveService.Contracts.Requests
 {
     public class CreateTTSRequest
     {
-        public string Value { get; set; }
-        public string Locale { get; set; }
-        public Guid VoiceId { get; set; }
+        public string? Ssml { get; set; } = null;
+        public string? Text { get; set; } = null;
+        public string Locale { get; set; } = default!;
+        public Guid VoiceId { get; set; } = default!;
     }
 
 }

@@ -3,7 +3,8 @@ using Amazon.Polly;
 using Amazon.Polly.Model;
 using Amazon.Runtime;
 using CognitiveService.Application.Queries;
-using CognitiveService.Infrastructure.ProviderResponses;
+using CognitiveService.Application.Services;
+using CognitiveService.Application.Services.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,42 +14,18 @@ using System.Threading.Tasks;
 
 namespace CognitiveService.Application.QueryHandlers
 {
-    public class FindAwsVoicesQueryHandler : IRequestHandler<FindAwsVoicesQuery, IReadOnlyCollection<AwsVoiceResponse>>
+    public class FindAwsVoicesQueryHandler : IRequestHandler<FindAwsVoicesQuery, DescribeVoicesResponse>
     {
-        private readonly AmazonPollyClient _polly;
+        private readonly IAmazonPollyService _amazonPollyService;
 
-        public FindAwsVoicesQueryHandler()
+        public FindAwsVoicesQueryHandler(IAmazonPollyService amazonPollyService)
         {
-            var credentials = new BasicAWSCredentials("AKIATBG2M4KPIDGN7AEY", "/UqrLlp8afVSY/eboZgvArjenLdwcLiqV2IHHyRX");
-
-            var polly = new AmazonPollyClient(credentials, RegionEndpoint.EUWest3);
-            _polly = polly;
+            _amazonPollyService = amazonPollyService;
         }
 
-        public async Task<IReadOnlyCollection<AwsVoiceResponse>> Handle(FindAwsVoicesQuery request, CancellationToken cancellationToken)
+        public async Task<DescribeVoicesResponse> Handle(FindAwsVoicesQuery request, CancellationToken cancellationToken)
         {
-            var awsResponse = await _polly.DescribeVoicesAsync(new DescribeVoicesRequest());
-
-            var voices = new List<AwsVoiceResponse>();
-
-            var specialVoices = new List<string>
-            {
-                "Amy", "Joanna", "Matthew", "Lupe"
-            };
-
-            foreach (var v in awsResponse.Voices)
-            {
-                var specialStyles = new List<string>();
-                if (specialVoices.Contains(v.Name))
-                {
-                    specialVoices.Add("news");
-                }
-                voices.Add(new AwsVoiceResponse(v.Id, v.Name, v.Gender, v.LanguageCode, v.SupportedEngines, v.LanguageName, v.AdditionalLanguageCodes, specialStyles));
-            }
-
-
-            return voices;
-
+            return await _amazonPollyService.DiscoverAmazonVoicesAsync();
         }
     }
 }

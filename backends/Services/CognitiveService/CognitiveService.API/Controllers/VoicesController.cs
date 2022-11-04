@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CognitiveService.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class VoicesController : ControllerBase
